@@ -3,9 +3,12 @@ package acc.spring.model;
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -47,4 +50,8 @@ public class Movimientos {
 	@NotNull
 	@Min(0)
 	private Long saldo;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "cuenta_id", nullable = false)
+    private Cuenta cuenta;
 }
