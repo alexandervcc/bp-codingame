@@ -5,6 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "api/cuentas")
-public class CuentasController {
+public class AccountController {
 
 }

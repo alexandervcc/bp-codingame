@@ -27,7 +27,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Table(name = "movimiento")
-public class Movimientos {
+public class Movements {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -53,5 +53,5 @@ public class Movimientos {
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "cuenta_id", nullable = false)
-    private Cuenta cuenta;
+    private Account cuenta;
 }

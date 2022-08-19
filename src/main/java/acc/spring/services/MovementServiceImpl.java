@@ -4,12 +4,12 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import acc.spring.repository.MovimientoRepository;
+import acc.spring.repository.MovementRepository;
 import lombok.AllArgsConstructor;
 
 @Transactional
 @Service
 @AllArgsConstructor
-public class MovimientoServiceImpl {
-  private MovimientoRepository movimientoRepository;
+public class MovementServiceImpl {
+  private MovementRepository movimientoRepository;
 }

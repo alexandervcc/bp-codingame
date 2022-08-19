@@ -5,19 +5,19 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import acc.spring.DTO.ClienteDto;
-import acc.spring.model.Persona;
-import acc.spring.repository.PersonaRepository;
+import acc.spring.model.Person;
+import acc.spring.repository.PersonRepository;
 import lombok.AllArgsConstructor;
 
 @Transactional
 @Service
 @AllArgsConstructor
-public class PersonaServiceImpl implements IPersonaService {
-    private PersonaRepository personaRepository;
+public class PersonServiceImpl implements IPersonService {
+    private PersonRepository personaRepository;
 
     @Override
-    public Persona createNewPersona(ClienteDto clienteDto) {
-        Persona nuevaPersona = Persona.builder()
+    public Person createNewPersona(ClienteDto clienteDto) {
+        Person nuevaPersona = Person.builder()
                 .id(null)
                 .direccion(clienteDto.direccion)
                 .edad(clienteDto.edad)

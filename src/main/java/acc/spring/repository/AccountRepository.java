@@ -3,9 +3,9 @@ package acc.spring.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import acc.spring.model.Persona;
+import acc.spring.model.Account;
 
 @Repository
-public interface PersonaRepository extends JpaRepository<Persona,Long>{
+public interface AccountRepository  extends JpaRepository<Account,Long>{
   
 }

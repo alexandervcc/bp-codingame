@@ -14,24 +14,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import acc.spring.DTO.ClienteDto;
-import acc.spring.model.Cliente;
-import acc.spring.services.IClienteService;
+import acc.spring.model.Client;
+import acc.spring.services.IClientService;
 
 
 @RestController
 @RequestMapping(path = "api/clientes")
-public class ClientesController {
-	private IClienteService clienteService;
+public class ClientsController {
+	private IClientService clienteService;
 
 	@GetMapping(path = "/all")
 	public ResponseEntity<List<?>> getAllClients() {
-		List<Cliente> listaClientes = clienteService.getAllClients();
+		List<Client> listaClientes = clienteService.getAllClients();
 		return ResponseEntity.status(HttpStatus.OK).body(listaClientes);
 	}
 	
 	@GetMapping(path = "/")
-	public ResponseEntity<Cliente> searchClientById(@RequestParam Long clientId) {
-		Cliente client = clienteService.getClientById(clientId);
+	public ResponseEntity<Client> searchClientById(@RequestParam Long clientId) {
+		Client client = clienteService.getClientById(clientId);
 		if(client==null){
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
@@ -40,13 +40,13 @@ public class ClientesController {
 	
 	@PostMapping(path="/")
 	public ResponseEntity<?> createNewClient(@RequestBody ClienteDto clientDto){
-		Cliente newClient = clienteService.createNewClient(clientDto);
+		Client newClient = clienteService.createNewClient(clientDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(newClient);
 	}
 
 	@PutMapping("/")
 	public ResponseEntity<?> updateClient(@RequestParam Long clientId,@RequestBody ClienteDto clientDto){
-		Cliente client = clienteService.updateClient(clientId, clientDto);
+		Client client = clienteService.updateClient(clientId, clientDto);
 		return ResponseEntity.status(HttpStatus.OK).body(client);
 	}
 

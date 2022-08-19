@@ -28,7 +28,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Table(name = "cuenta")
-public class Cuenta {
+public class Account {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long numeroDeCuenta;
@@ -50,8 +50,8 @@ public class Cuenta {
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "cliente_id", nullable = false)
-    private Cliente cliente;
+    private Client cliente;
 
 	@OneToMany(mappedBy = "cuenta", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Movimientos> movimientos;
+	private Set<Movements> movimientos;
 }

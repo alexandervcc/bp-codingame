@@ -25,7 +25,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cliente {
+public class Client {
 	// public class Cliente extends Persona{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,5 +41,5 @@ public class Cliente {
 	private Boolean estado;
 
 	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Cuenta> cuentas;
+	private Set<Account> cuentas;
 }

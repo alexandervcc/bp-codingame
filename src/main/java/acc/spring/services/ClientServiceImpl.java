@@ -7,19 +7,19 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import acc.spring.DTO.ClienteDto;
-import acc.spring.model.Cliente;
-import acc.spring.repository.ClienteRepository;
+import acc.spring.model.Client;
+import acc.spring.repository.ClientRepository;
 import lombok.AllArgsConstructor;
 
 @Service
 @Transactional
 @AllArgsConstructor
-public class ClienteServiceImpl implements IClienteService {
-  private ClienteRepository clienteRepository;
+public class ClientServiceImpl implements IClientService {
+  private ClientRepository clienteRepository;
 
   @Override
-  public Cliente createNewClient(ClienteDto clientedto) {
-    Cliente nuevoCliente = Cliente.builder()
+  public Client createNewClient(ClienteDto clientedto) {
+    Client nuevoCliente = Client.builder()
         .clienteId(null)
         .contrasena(clientedto.contrasena)
         .estado(clientedto.estado)
@@ -35,20 +35,20 @@ public class ClienteServiceImpl implements IClienteService {
   }
 
   @Override
-  public List<Cliente> getAllClients() {
-    List<Cliente> listaClientes = clienteRepository.findAll();
+  public List<Client> getAllClients() {
+    List<Client> listaClientes = clienteRepository.findAll();
     return listaClientes;
   }
 
   @Override
-  public Cliente getClientById(Long id) {
-    Cliente cliente = clienteRepository.findById(id).orElseThrow();
+  public Client getClientById(Long id) {
+    Client cliente = clienteRepository.findById(id).orElseThrow();
     return cliente;
   }
 
   @Override
-  public Cliente updateClient(Long id, ClienteDto clienteDto) {
-    Cliente cliente = clienteRepository.findById(id).orElseThrow();
+  public Client updateClient(Long id, ClienteDto clienteDto) {
+    Client cliente = clienteRepository.findById(id).orElseThrow();
     if(clienteDto.contrasena!=null)cliente.setContrasena(clienteDto.contrasena);
     if(clienteDto.estado!=null)cliente.setEstado(clienteDto.estado);
     clienteRepository.save(cliente);
