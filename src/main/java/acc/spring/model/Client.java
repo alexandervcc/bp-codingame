@@ -33,11 +33,10 @@ public class Client {
 
 	@NotNull
 	@NotBlank(message = "Contrasena es obligatoria")
-	@Min(16)
+	@Min(8)
 	private String contrasena;
 
 	@NotNull
-	@NotBlank(message = "Estado es Obligatorio")
 	private Boolean estado;
 
 	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

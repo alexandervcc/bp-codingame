@@ -1,6 +1,6 @@
 package acc.spring.DTO;
 
-public class CuentaDto {
+public class AccountDto {
 	public Long numeroDeCuenta;
 	public String tipoDeCuenta;
 	public Long saldoInicial;
