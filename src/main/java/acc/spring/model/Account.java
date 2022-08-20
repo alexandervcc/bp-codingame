@@ -12,10 +12,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotNull; 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,24 +39,23 @@ public class Account {
 	private Long numeroDeCuenta;
 
 	@NotBlank(message = "El tipo de cuenta es obligatorio")
-	@Size(min = 1, max = 1)
-	@Pattern(regexp = "AHORROS|CORRIENTE", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Valor invalido para Tipo de cuenta")
 	@NotNull
+	
 	private String tipoDeCuenta;
 
-	@NotBlank(message = "El saldo inicial es obligatorio")
-	@Size(min = 0)
-	@NotNull
+	@Min(0)
+	@NotNull(message = "El saldo inicial es obligatorio")
 	private Long saldoInicial;
 
-	@NotBlank(message = "El estado es obligatorio")
-	@NotNull
+	@NotNull(message = "El estado es obligatorio")
 	private Boolean estado;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "cliente_id", nullable = false)
+	@JsonIgnore
     private Client cliente;
 
 	@OneToMany(mappedBy = "cuenta", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Set<Movement> movimientos;
 }

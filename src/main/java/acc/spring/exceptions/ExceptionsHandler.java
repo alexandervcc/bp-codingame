@@ -21,4 +21,9 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Valor invalido en su solicitud.");
     }
 
+    @ExceptionHandler(value={InvalidParameter.class})
+    public ResponseEntity<?> handleDtoParametersException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
 }

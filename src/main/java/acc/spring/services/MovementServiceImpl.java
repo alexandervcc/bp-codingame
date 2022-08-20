@@ -8,7 +8,6 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import acc.spring.DTO.MovementDto;
-import acc.spring.exceptions.NotFoundException;
 import acc.spring.exceptions.InsufficientFundsException;
 import acc.spring.exceptions.InvalidMovementException;
 import acc.spring.model.Account;

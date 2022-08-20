@@ -17,8 +17,8 @@ import acc.spring.DTO.ClientDto;
 import acc.spring.exceptions.NotFoundException;
 import acc.spring.model.Client;
 import acc.spring.services.IClientService;
+
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping(path = "api/clientes")
@@ -38,24 +38,24 @@ public class ClientsController {
 		if (client == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
-		return ResponseEntity.status(HttpStatus.FOUND).body(clientId);
+		return ResponseEntity.status(HttpStatus.FOUND).body(client);
 	}
 
 	@PostMapping(path = "/")
-	public ResponseEntity<?> createNewClient(@RequestBody ClientDto clientDto) {
+	public ResponseEntity<Client> createNewClient(@RequestBody ClientDto clientDto) {
 		Client newClient = clienteService.createNewClient(clientDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(newClient);
 	}
 
 	@PutMapping("/")
-	public ResponseEntity<?> updateClient(@RequestParam Long clientId, @RequestBody ClientDto clientDto)
+	public ResponseEntity<Client> updateClient(@RequestParam Long clientId, @RequestBody ClientDto clientDto)
 			throws NotFoundException {
 		Client client = clienteService.updateClient(clientId, clientDto);
 		return ResponseEntity.status(HttpStatus.OK).body(client);
 	}
 
 	@DeleteMapping("/")
-	public ResponseEntity<?> deleteClient(@RequestParam Long clientId) throws NotFoundException {
+	public ResponseEntity<String> deleteClient(@RequestParam Long clientId) throws NotFoundException {
 		clienteService.deleteClientById(clientId);
 		return ResponseEntity.status(HttpStatus.OK).body("Cliente eliminado");
 	}
