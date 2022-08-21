@@ -1,7 +1,9 @@
 package acc.spring.controller;
 
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import acc.spring.DTO.MovementDto;
+import acc.spring.DTO.ResListMovement;
 import acc.spring.model.Movement;
 import acc.spring.services.IMovementsService;
 import lombok.AllArgsConstructor;
@@ -31,9 +34,18 @@ public class MovementsController {
 	}
 
 	@GetMapping(path = "/")
-	public ResponseEntity<?> getMovementsByAccount(@RequestParam Long accountId,
-			@RequestBody(required = false) MovementDto movementDto) throws Exception {
-		List<Movement> listMovements = movementsService.getMovementsByAccount(accountId, movementDto);
+	public ResponseEntity<?> getMovementsByAccount(
+			@RequestParam Long accountId,
+			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date fechaInicio,
+			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date fechaFin)
+			throws Exception {
+		MovementDto movementDto = new MovementDto();
+		if (fechaInicio != null)
+			movementDto.fechaInicio = new Timestamp(fechaInicio.getTime());
+		if (fechaFin != null)
+			movementDto.fechaFin = new Timestamp(fechaFin.getTime());
+
+		ResListMovement listMovements = movementsService.getMovementsByAccount(accountId, movementDto);
 
 		return ResponseEntity.status(HttpStatus.OK).body(listMovements);
 	}

@@ -26,6 +26,7 @@ public class MovementOperations {
                 throw new InsufficientFundsException("Saldo no disponible");
             }
             newOriginFunds = accountFunds - movementDto.valor;
+            movementDto.valor = -movementDto.valor;
         } else {
             newOriginFunds = accountFunds + movementDto.valor;
         }

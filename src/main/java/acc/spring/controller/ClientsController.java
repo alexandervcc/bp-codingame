@@ -42,7 +42,7 @@ public class ClientsController {
 	}
 
 	@PostMapping(path = "/")
-	public ResponseEntity<Client> createNewClient(@RequestBody ClientDto clientDto) {
+	public ResponseEntity<Client> createNewClient(@RequestBody ClientDto clientDto) throws Exception{
 		Client newClient = clienteService.createNewClient(clientDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(newClient);
 	}

@@ -7,7 +7,7 @@ import acc.spring.exceptions.NotFoundException;
 import acc.spring.model.Client;
 
 public interface IClientService {
-    public Client createNewClient(ClientDto clienteDto);
+    public Client createNewClient(ClientDto clienteDto) throws Exception;
 
     public Client updateClient(Long id, ClientDto clienteDto) throws NotFoundException;
 

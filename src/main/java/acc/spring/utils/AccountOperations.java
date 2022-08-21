@@ -18,7 +18,7 @@ public class AccountOperations {
     }
 
     public static void checkAccountStatus(Account account) throws BlockedAccountException{
-        if (account.getEstado()) {
+        if (!account.getEstado()) {
 			throw new BlockedAccountException("Cuenta esta inactiva");
 		}
     }

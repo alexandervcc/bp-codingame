@@ -42,6 +42,13 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
+    @ExceptionHandler(value = { BlockedAccountException.class })
+    public ResponseEntity<?> handleInnactiveAccount(Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    
+
     @ExceptionHandler(value = { ConstraintViolationException.class })
     public ResponseEntity<?> handleModelConstrainsException(ConstraintViolationException ex) {
         Set<ConstraintViolation<?>> listOfValidations = ex.getConstraintViolations();

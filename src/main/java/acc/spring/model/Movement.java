@@ -40,7 +40,6 @@ public class Movement {
 	private String tipoMovimiento;
 
 	@NotNull(message = "El valor es obligatorio")
-	@Min(1L)
 	private Long valor;
 
 	@NotNull(message = "El saldo es obligatorio")

@@ -7,9 +7,12 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import acc.spring.DTO.ClientDto;
+import acc.spring.exceptions.InvalidParameter;
 import acc.spring.exceptions.NotFoundException;
 import acc.spring.model.Client;
+import acc.spring.model.Person;
 import acc.spring.repository.ClientRepository;
+import acc.spring.repository.PersonRepository;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -17,9 +20,15 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ClientServiceImpl implements IClientService {
   private ClientRepository clienteRepository;
+  private PersonRepository personRepository;
 
   @Override
-  public Client createNewClient(ClientDto clientdto) {
+  public Client createNewClient(ClientDto clientdto) throws Exception {
+    List<Person> person = personRepository.findByIdentificacion(clientdto.identificacion);
+    if (person.size() != 0) {
+      throw new InvalidParameter("Identification en uso.");
+    }
+
     Client newCliente = new Client();
     newCliente.setNombre(clientdto.nombre);
     newCliente.setGenero(clientdto.genero);

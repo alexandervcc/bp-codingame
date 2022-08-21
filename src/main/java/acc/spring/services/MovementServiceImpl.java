@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import acc.spring.DTO.MovementDto;
+import acc.spring.DTO.ResListMovement;
 import acc.spring.exceptions.DateException;
 import acc.spring.exceptions.NotFoundException;
 import acc.spring.model.Account;
@@ -40,7 +41,7 @@ public class MovementServiceImpl implements IMovementsService {
 				.orElseThrow(() -> new NotFoundException("Cuenta Origen no Encontrada"));
 
 		AccountOperations.checkAccountStatus(account);
-		
+
 		Long newOriginFunds = MovementOperations.calculateNewAccountFunds(movementDto, account.getSaldoInicial());
 
 		account.setSaldoInicial(newOriginFunds);
@@ -61,13 +62,14 @@ public class MovementServiceImpl implements IMovementsService {
 	}
 
 	@Override
-	public List<Movement> getMovementsByAccount(Long accountId, MovementDto movementDto)
+	public ResListMovement getMovementsByAccount(Long accountId, MovementDto movementDto)
 			throws Exception {
 
-		Account account = accountRepository.findById(accountId)
+		Account account = accountRepository.findByIdAndFetchClientEagerly(accountId)
 				.orElseThrow(() -> new NotFoundException("Cuenta no encontrada"));
 
 		List<Movement> listMovements;
+
 		if (movementDto.fechaInicio != null && movementDto.fechaFin != null) {
 			if (movementDto.fechaInicio.after(movementDto.fechaFin)) {
 				throw new DateException("Fecha inicial despues de la final");
@@ -83,8 +85,11 @@ public class MovementServiceImpl implements IMovementsService {
 		} else {
 			listMovements = movementsRepository.findByCuentaOrderByFechaDesc(account);
 		}
-
-		return listMovements;
+		ResListMovement response = new ResListMovement();
+		response.cuenta = account;
+		response.movimientos=listMovements;
+		response.cliente = account.getCliente();
+		return response;
 	}
 
 	@Override
