@@ -13,7 +13,7 @@ import acc.spring.model.Movement;
 public interface IMovementsService {
     public Movement createNewMovement(MovementDto movementDto) throws Exception;
 
-    public ResListMovement getMovementsByAccount(Long accountId, MovementDto movementDto) throws Exception;
+    public ResListMovement getMovementsByClient(Long clientId, MovementDto movementDto) throws Exception;
 
     public List<Movement> getAllMovements();
 

@@ -26,7 +26,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class MovementsController {
 	private IMovementsService movementsService;
-
 	@GetMapping(path = "/all")
 	public ResponseEntity<Iterable<Movement>> getAllMovements() {
 		Iterable<Movement> listaMovimientos = movementsService.getAllMovements();
@@ -35,7 +34,7 @@ public class MovementsController {
 
 	@GetMapping(path = "/")
 	public ResponseEntity<?> getMovementsByAccount(
-			@RequestParam Long accountId,
+			@RequestParam Long clientId,
 			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date fechaInicio,
 			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date fechaFin)
 			throws Exception {
@@ -45,7 +44,7 @@ public class MovementsController {
 		if (fechaFin != null)
 			movementDto.fechaFin = new Timestamp(fechaFin.getTime());
 
-		ResListMovement listMovements = movementsService.getMovementsByAccount(accountId, movementDto);
+		ResListMovement listMovements = movementsService.getMovementsByClient(clientId, movementDto);
 
 		return ResponseEntity.status(HttpStatus.OK).body(listMovements);
 	}

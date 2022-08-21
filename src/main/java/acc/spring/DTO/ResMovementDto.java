@@ -2,11 +2,7 @@ package acc.spring.DTO;
 
 import java.sql.Timestamp;
 
-public class MovementDto {
-	public Long movementId;
-
-	public Timestamp fechaInicio;
-	public Timestamp fechaFin;
+public class ResMovementDto {
 	public Timestamp fecha;
 
 	public String tipoMovimiento;
@@ -16,6 +12,4 @@ public class MovementDto {
 
 	public String tipoCuentaOrigen;
 	public Long cuentaOrigen;
-	
-
 }

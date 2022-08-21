@@ -29,7 +29,7 @@ public class PDFGenerator {
         PdfWriter.getInstance(document, new FileOutputStream("reporte.pdf"));
 
         document.open();
-        addHeader(document, movementsReport.cliente);
+       //addHeader(document, movementsReport.cliente);
 
         PdfPTable table = new PdfPTable(7);
         addTableHeader(table);
@@ -64,14 +64,6 @@ public class PDFGenerator {
 
     private void addRows(PdfPTable table, ResListMovement report) {
         report.movimientos.forEach(movement -> {
-            table.addCell(movement.getFecha().toString());
-            table.addCell(report.cuenta.getNumeroDeCuenta().toString());
-            table.addCell(movement.getTipoMovimiento());
-            Long saldoInicial = movement.getSaldo() - movement.getValor();
-            table.addCell(saldoInicial.toString());
-            table.addCell(report.cuenta.getEstado().toString());
-            table.addCell(movement.getValor().toString());
-            table.addCell(movement.getSaldo().toString());
         });
 
     }
