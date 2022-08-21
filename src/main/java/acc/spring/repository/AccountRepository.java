@@ -7,5 +7,5 @@ import acc.spring.model.Account;
 
 @Repository
 public interface AccountRepository  extends JpaRepository<Account,Long>{
-  
+    
 }

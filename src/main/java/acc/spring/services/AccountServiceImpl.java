@@ -12,7 +12,7 @@ import acc.spring.model.Account;
 import acc.spring.model.Client;
 import acc.spring.repository.AccountRepository;
 import acc.spring.repository.ClientRepository;
-import acc.spring.utils.AccountValidation;
+import acc.spring.utils.AccountOperations;
 import lombok.AllArgsConstructor;
 
 @Transactional
@@ -30,7 +30,7 @@ public class AccountServiceImpl implements IAccountService {
   @Override
   public Account createNewAccount(AccountDto accountDto) throws Exception {
 
-    AccountValidation.checkInvalidValuesForAccount(accountDto);
+    AccountOperations.checkInvalidValuesForAccount(accountDto);
 
     Client client = clientRepository.findById(accountDto.clienteId)
         .orElseThrow(() -> new NotFoundException("Cliente no encontrado"));
@@ -52,7 +52,7 @@ public class AccountServiceImpl implements IAccountService {
 
   @Override
   public Account updateAccount(AccountDto accountDto, Long accountId) throws Exception {
-    AccountValidation.checkInvalidValuesForAccount(accountDto);
+    AccountOperations.checkInvalidValuesForAccount(accountDto);
 
     Account account = accountRepository.findById(accountId)
         .orElseThrow(() -> new NotFoundException("Cuenta no Encontrada"));

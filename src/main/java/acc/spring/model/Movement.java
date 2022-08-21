@@ -11,10 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,25 +34,21 @@ public class Movement {
 	private Long id;
 	
 	@NotNull
-	@NotBlank(message = "Valor de fecha es obligatorio")
 	private Timestamp fecha;
 	
-	@NotBlank(message = "El tipo de movimienot es obligatorio")
-	@NotNull
-	@Pattern(regexp = "DEBITO|CREDITO", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Valor invalido para Tipo de movimiento")
+	@NotNull(message = "El tipo de movimiento es obligatorio")
 	private String tipoMovimiento;
 
-	@NotBlank(message = "El valor es obligatorio")
-	@NotNull
-	@Min(1)
+	@NotNull(message = "El valor es obligatorio")
+	@Min(1L)
 	private Long valor;
 
-	@NotBlank(message = "El saldo es obligatorio")
-	@NotNull
+	@NotNull(message = "El saldo es obligatorio")
 	@Min(0)
 	private Long saldo;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "cuenta_id", nullable = false)
+	@JsonIgnore
     private Account cuenta;
 }

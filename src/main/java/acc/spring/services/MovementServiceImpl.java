@@ -2,18 +2,21 @@ package acc.spring.services;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
 import acc.spring.DTO.MovementDto;
-import acc.spring.exceptions.InsufficientFundsException;
-import acc.spring.exceptions.InvalidMovementException;
+import acc.spring.exceptions.DateException;
+import acc.spring.exceptions.NotFoundException;
 import acc.spring.model.Account;
 import acc.spring.model.Movement;
 import acc.spring.repository.AccountRepository;
 import acc.spring.repository.MovementRepository;
+import acc.spring.utils.AccountOperations;
+import acc.spring.utils.MovementOperations;
 import lombok.AllArgsConstructor;
 
 @Transactional
@@ -24,54 +27,84 @@ public class MovementServiceImpl implements IMovementsService {
 	private AccountRepository accountRepository;
 
 	@Override
+	public List<Movement> getAllMovements() {
+		return movementsRepository.findAll();
+	}
+
+	@Override
 	public Movement createNewMovement(MovementDto movementDto) throws Exception {
-		Account account = accountRepository.findById(movementDto.cuentaId)
-				.orElseThrow();
 
-		Long nuevoSaldo;
-		if (movementDto.tipoMovimiento.equals("DEBITO")) {
-			if (account.getSaldoInicial() < movementDto.valor) {
-				throw new InsufficientFundsException();
-			}
-			nuevoSaldo = account.getSaldoInicial() - movementDto.valor;
-		} else if (movementDto.tipoMovimiento.equals("CREDITO")) {
-			nuevoSaldo = account.getSaldoInicial() + movementDto.valor;
-		} else {
-			throw new InvalidMovementException();
-		}
+		MovementOperations.checkInvalidValuesForMovement(movementDto);
 
-		Movement movement = Movement.builder()
+		Account account = accountRepository.findById(movementDto.cuentaOrigen)
+				.orElseThrow(() -> new NotFoundException("Cuenta Origen no Encontrada"));
+
+		AccountOperations.checkAccountStatus(account);
+		
+		Long newOriginFunds = MovementOperations.calculateNewAccountFunds(movementDto, account.getSaldoInicial());
+
+		account.setSaldoInicial(newOriginFunds);
+		Timestamp movementDate = new Timestamp(new Date().getTime());
+
+		Movement newMovement = Movement.builder()
 				.id(null)
 				.cuenta(account)
-				.fecha(new Timestamp(new Date().getTime()))
-				.saldo(nuevoSaldo)
+				.fecha(movementDate)
+				.saldo(newOriginFunds)
 				.tipoMovimiento(movementDto.tipoMovimiento)
+				.valor(movementDto.valor)
 				.build();
+
+		accountRepository.save(account);
+
+		return movementsRepository.save(newMovement);
+	}
+
+	@Override
+	public List<Movement> getMovementsByAccount(Long accountId, MovementDto movementDto)
+			throws Exception {
+
+		Account account = accountRepository.findById(accountId)
+				.orElseThrow(() -> new NotFoundException("Cuenta no encontrada"));
+
+		List<Movement> listMovements;
+		if (movementDto.fechaInicio != null && movementDto.fechaFin != null) {
+			if (movementDto.fechaInicio.after(movementDto.fechaFin)) {
+				throw new DateException("Fecha inicial despues de la final");
+			}
+			listMovements = movementsRepository.findAllByCuentaAndFechaBetweenOrderByFechaDesc(account,
+					movementDto.fechaInicio,
+					movementDto.fechaFin);
+		} else if (movementDto.fechaInicio != null && movementDto.fechaFin == null) {
+			Timestamp fechaActual = new Timestamp(new Date().getTime());
+			listMovements = movementsRepository.findAllByCuentaAndFechaBetweenOrderByFechaDesc(account,
+					movementDto.fechaInicio,
+					fechaActual);
+		} else {
+			listMovements = movementsRepository.findByCuentaOrderByFechaDesc(account);
+		}
+
+		return listMovements;
+	}
+
+	@Override
+	public Movement updateMovement(MovementDto movementDto) throws Exception {
+		Movement movement = movementsRepository.findById(movementDto.movementId)
+				.orElseThrow(() -> new NotFoundException("Movimiento no Encontrado"));
+
+		if (movementDto.tipoMovimiento != null)
+			movement.setTipoMovimiento(movementDto.tipoMovimiento);
+		if (movementDto.valor != null)
+			movement.setValor(movementDto.valor);
+
 		return movementsRepository.save(movement);
 	}
 
 	@Override
-	public void deleteMovement(Long movementId) {
-		Movement movement = movementsRepository.findById(movementId).orElseThrow();
+	public void deleteMovement(Long movementId) throws NotFoundException {
+		Movement movement = movementsRepository.findById(movementId)
+				.orElseThrow(() -> new NotFoundException("Movimiento no Encontrado"));
 		movementsRepository.delete(movement);
-	}
-
-	@Override
-	public Movement getMovementByAccountAndDate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Movement getMovementsByAccount() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Movement updatMovement(MovementDto movementDto) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

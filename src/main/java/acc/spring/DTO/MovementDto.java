@@ -4,9 +4,15 @@ import java.sql.Timestamp;
 
 public class MovementDto {
 	public Long movementId;
-	public Timestamp fecha;
+
+	public Timestamp fechaInicio;
+	public Timestamp fechaFin;
+
 	public String tipoMovimiento;
 	public Long valor;
-	public Long saldo;
-	public Long cuentaId;
+
+	public Long cuentaOrigen;
+	
+	public String tipoCuentaOrigen;
+
 }

@@ -18,12 +18,24 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value={UnexpectedTypeException.class})
     public ResponseEntity<?> handleTypeException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Valor invalido en su solicitud.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Valor invalido en su solicitud: "+ex.getMessage());
     }
 
     @ExceptionHandler(value={InvalidParameter.class})
     public ResponseEntity<?> handleDtoParametersException(Exception ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
+    @ExceptionHandler(value={InsufficientFundsException.class})
+    public ResponseEntity<?> handleInsuficientFundsException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(value={DateException.class})
+    public ResponseEntity<?> handleDatesException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+    
+    
 
 }
