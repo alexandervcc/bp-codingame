@@ -6,7 +6,9 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
+
 
 import acc.spring.DTO.MovementDto;
 import acc.spring.DTO.ResListMovement;
@@ -18,6 +20,7 @@ import acc.spring.repository.AccountRepository;
 import acc.spring.repository.MovementRepository;
 import acc.spring.utils.AccountOperations;
 import acc.spring.utils.MovementOperations;
+import acc.spring.utils.PDFGenerator;
 import lombok.AllArgsConstructor;
 
 @Transactional
@@ -26,6 +29,7 @@ import lombok.AllArgsConstructor;
 public class MovementServiceImpl implements IMovementsService {
 	private MovementRepository movementsRepository;
 	private AccountRepository accountRepository;
+	private PDFGenerator pdfGenerator;
 
 	@Override
 	public List<Movement> getAllMovements() {
@@ -87,9 +91,42 @@ public class MovementServiceImpl implements IMovementsService {
 		}
 		ResListMovement response = new ResListMovement();
 		response.cuenta = account;
-		response.movimientos=listMovements;
+		response.movimientos = listMovements;
 		response.cliente = account.getCliente();
 		return response;
+	}
+
+	@Override
+	public FileSystemResource createMovementPDFReport(Long accountId, MovementDto movementDto) throws Exception {
+		Account account = accountRepository.findByIdAndFetchClientEagerly(accountId)
+				.orElseThrow(() -> new NotFoundException("Cuenta no encontrada"));
+
+		List<Movement> listMovements;
+
+		if (movementDto.fechaInicio != null && movementDto.fechaFin != null) {
+			if (movementDto.fechaInicio.after(movementDto.fechaFin)) {
+				throw new DateException("Fecha inicial despues de la final");
+			}
+			listMovements = movementsRepository.findAllByCuentaAndFechaBetweenOrderByFechaDesc(account,
+					movementDto.fechaInicio,
+					movementDto.fechaFin);
+		} else if (movementDto.fechaInicio != null && movementDto.fechaFin == null) {
+			Timestamp fechaActual = new Timestamp(new Date().getTime());
+			listMovements = movementsRepository.findAllByCuentaAndFechaBetweenOrderByFechaDesc(account,
+					movementDto.fechaInicio,
+					fechaActual);
+		} else {
+			listMovements = movementsRepository.findByCuentaOrderByFechaDesc(account);
+		}
+
+		ResListMovement movementReport = new ResListMovement();
+		movementReport.cuenta = account;
+		movementReport.movimientos = listMovements;
+		movementReport.cliente = account.getCliente();
+
+		pdfGenerator.createReport(movementReport);
+
+		return new FileSystemResource("./reporte.pdf");
 	}
 
 	@Override
