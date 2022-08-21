@@ -19,17 +19,17 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import acc.spring.DTO.ResListMovement;
-import acc.spring.model.Client;
 
+import static acc.spring.constants.AppConstants.*;
 @Component
 public class PDFGenerator {
     public void createReport(ResListMovement movementsReport) throws FileNotFoundException, DocumentException {
         Document document = new Document();
 
-        PdfWriter.getInstance(document, new FileOutputStream("reporte.pdf"));
+        PdfWriter.getInstance(document, new FileOutputStream(REPORT_URL_NAME));
 
         document.open();
-       //addHeader(document, movementsReport.cliente);
+        addHeader(document, movementsReport);
 
         PdfPTable table = new PdfPTable(7);
         addTableHeader(table);
@@ -40,12 +40,12 @@ public class PDFGenerator {
         document.close();
     }
 
-    private void addHeader(Document document, Client cliente) throws FileNotFoundException, DocumentException {
+    private void addHeader(Document document, ResListMovement movementsReport) throws FileNotFoundException, DocumentException {
         Font fontText = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
         Chunk chunk = new Chunk("Reporte de movimientos", fontText);
         document.add(chunk);
         document.add(new Paragraph("\n"));
-        chunk = new Chunk("Cliente: " + cliente.getNombre(), fontText);
+        chunk = new Chunk("Cliente: " + movementsReport.cliente.nombre, fontText);
         document.add(chunk);
         document.add(new Paragraph("\n"));
     }
@@ -64,6 +64,13 @@ public class PDFGenerator {
 
     private void addRows(PdfPTable table, ResListMovement report) {
         report.movimientos.forEach(movement -> {
+            table.addCell(movement.fecha.toString());
+            table.addCell(movement.cuentaOrigen.toString());
+            table.addCell(movement.tipoMovimiento);
+            table.addCell(movement.saldoInicial.toString());
+            table.addCell(movement.estado.toString());
+            table.addCell(movement.valor.toString());
+            table.addCell(movement.saldoDisponible.toString());
         });
 
     }

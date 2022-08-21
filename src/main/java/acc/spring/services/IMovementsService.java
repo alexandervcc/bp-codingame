@@ -17,7 +17,7 @@ public interface IMovementsService {
 
     public List<Movement> getAllMovements();
 
-    public FileSystemResource createMovementPDFReport(Long accountId, MovementDto movementDto) throws Exception ;
+    public FileSystemResource createMovementPDFReport(Long clientId, MovementDto movementDto) throws Exception ;
 
     public Movement updateMovement(MovementDto movementDto) throws Exception;
 

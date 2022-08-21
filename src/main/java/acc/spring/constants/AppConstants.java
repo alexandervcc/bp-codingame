@@ -12,4 +12,6 @@ public final class AppConstants {
 
     public static final Long MINIMUN_MOVEMENT_VALUE = 1L;
 
-}
+    public static final String REPORT_URL_NAME = "./reporte.pdf";
+
+    }

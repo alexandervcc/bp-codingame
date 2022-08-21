@@ -24,7 +24,7 @@ public class ReportController {
 
     @GetMapping(path = "/")
     public ResponseEntity<?> getMovementsByAccount(
-            @RequestParam Long accountId,
+            @RequestParam Long clientId,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date fechaInicio,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date fechaFin)
             throws Exception {
@@ -34,7 +34,7 @@ public class ReportController {
         if (fechaFin != null)
             movementDto.fechaFin = new Timestamp(fechaFin.getTime());
 
-        FileSystemResource pdfReport = movementsService.createMovementPDFReport(accountId, movementDto);
+        FileSystemResource pdfReport = movementsService.createMovementPDFReport(clientId, movementDto);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(pdfReport);

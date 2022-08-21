@@ -26,6 +26,8 @@ import acc.spring.utils.MovementOperations;
 import acc.spring.utils.PDFGenerator;
 import lombok.AllArgsConstructor;
 
+import static acc.spring.constants.AppConstants.*;
+
 @Transactional
 @Service
 @AllArgsConstructor
@@ -118,6 +120,7 @@ public class MovementServiceImpl implements IMovementsService {
 			movementDtoResponse.valor = movement.getValor();
 			movementDtoResponse.saldoDisponible = movement.getSaldo();
 			movementDtoResponse.tipoMovimiento = movement.getTipoMovimiento();
+			movementDtoResponse.estado = movement.getCuenta().getEstado();
 			response.movimientos.add(movementDtoResponse);
 		}); 
 
@@ -129,34 +132,13 @@ public class MovementServiceImpl implements IMovementsService {
 	}
 
 	@Override
-	public FileSystemResource createMovementPDFReport(Long accountId, MovementDto movementDto) throws Exception {
-		Account account = accountRepository.findByIdAndFetchClientEagerly(accountId)
-				.orElseThrow(() -> new NotFoundException("Cuenta no encontrada"));
-
-		List<Movement> listMovements;
-
-		if (movementDto.fechaInicio != null && movementDto.fechaFin != null) {
-			if (movementDto.fechaInicio.after(movementDto.fechaFin)) {
-				throw new DateException("Fecha inicial despues de la final");
-			}
-			listMovements = movementsRepository.findAllByCuentaAndFechaBetweenOrderByFechaDesc(account,
-					movementDto.fechaInicio,
-					movementDto.fechaFin);
-		} else if (movementDto.fechaInicio != null && movementDto.fechaFin == null) {
-			Timestamp fechaActual = new Timestamp(new Date().getTime());
-			listMovements = movementsRepository.findAllByCuentaAndFechaBetweenOrderByFechaDesc(account,
-					movementDto.fechaInicio,
-					fechaActual);
-		} else {
-			listMovements = movementsRepository.findByCuentaOrderByFechaDesc(account);
-		}
-
-		ResListMovement movementReport = new ResListMovement();
-
+	public FileSystemResource createMovementPDFReport(Long clientId, MovementDto movementDto) throws Exception {
+		
+		ResListMovement movementReport = getMovementsByClient(clientId, movementDto);
 
 		pdfGenerator.createReport(movementReport);
 
-		return new FileSystemResource("./reporte.pdf");
+		return new FileSystemResource(REPORT_URL_NAME);
 	}
 
 	@Override

@@ -12,4 +12,6 @@ public class ResMovementDto {
 
 	public String tipoCuentaOrigen;
 	public Long cuentaOrigen;
+
+	public Boolean estado;
 }
