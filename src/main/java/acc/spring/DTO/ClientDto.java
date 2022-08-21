@@ -6,7 +6,7 @@ public class ClientDto {
 	public String nombre;
 	public String genero;
 	public Integer edad;
-	public String identification;
+	public String identificacion;
 	public String direccion;
 	public String telefono;
 }

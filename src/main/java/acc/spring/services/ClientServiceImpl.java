@@ -19,13 +19,19 @@ public class ClientServiceImpl implements IClientService {
   private ClientRepository clienteRepository;
 
   @Override
-  public Client createNewClient(ClientDto clientedto) {
-    Client nuevoCliente = Client.builder()
-        .clienteId(null)
-        .contrasena(clientedto.contrasena)
-        .estado(clientedto.estado)
-        .build();
-    return clienteRepository.save(nuevoCliente);
+  public Client createNewClient(ClientDto clientdto) {
+    Client newCliente = new Client();
+    newCliente.setNombre(clientdto.nombre);
+    newCliente.setGenero(clientdto.genero);
+    newCliente.setEdad(clientdto.edad);
+    newCliente.setDireccion(clientdto.direccion);
+    newCliente.setIdentificacion(clientdto.identificacion);
+    newCliente.setDireccion(clientdto.direccion);
+    newCliente.setTelefono(clientdto.telefono);
+
+    newCliente.setContrasena(clientdto.contrasena);
+    newCliente.setEstado(clientdto.estado);
+    return clienteRepository.save(newCliente);
   }
 
   @Override
@@ -49,7 +55,7 @@ public class ClientServiceImpl implements IClientService {
 
   @Override
   public Client updateClient(Long id, ClientDto clienteDto) throws NotFoundException {
-    Client cliente = clienteRepository.findById(id).orElseThrow(()->new NotFoundException("Cliente no encontrado"));
+    Client cliente = clienteRepository.findById(id).orElseThrow(() -> new NotFoundException("Cliente no encontrado"));
     if (clienteDto.contrasena != null)
       cliente.setContrasena(clienteDto.contrasena);
     if (clienteDto.estado != null)

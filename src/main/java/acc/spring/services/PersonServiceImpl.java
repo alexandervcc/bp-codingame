@@ -22,7 +22,7 @@ public class PersonServiceImpl implements IPersonService {
                 .direccion(clienteDto.direccion)
                 .edad(clienteDto.edad)
                 .genero(clienteDto.genero)
-                .identification(clienteDto.identification)
+                .identificacion(clienteDto.identificacion)
                 .nombre(clienteDto.nombre)
                 .telefono(clienteDto.telefono)
                 .build();

@@ -5,19 +5,15 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,22 +21,17 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "cliente")
-public class Client {
-	// public class Cliente extends Persona{
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long clienteId;
+@PrimaryKeyJoinColumn(name = "cliente_id")
+public class Client extends Person {
 
-	@NotNull
-	@NotBlank(message = "Contrasena es obligatoria")
-	@Min(8)
+	@NotNull(message = "Contrasena es obligatoria")
+	@Size(min = 8, message = "Tamano de contransena invalida.")
 	private String contrasena;
 
-	@NotNull
+	@NotNull(message = "Estado de cuenta es obligatorio")
 	private Boolean estado;
 
 	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
