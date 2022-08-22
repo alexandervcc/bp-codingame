@@ -18,7 +18,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
@@ -50,8 +49,7 @@ public class ClientsControllerTests {
         when(clientService.getClientById(1L)).thenReturn(client);
         this.mockMvc
                 .perform(
-                        get("/api/clientes/")
-                                .param("clientId", "1"))
+                        get("/api/clientes/1"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -72,7 +70,7 @@ public class ClientsControllerTests {
                                 .content(body))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.nombre").value(client.getNombre()));
+                .andExpect(jsonPath("$.data.nombre").value(client.getNombre()));
     }
 
     @Test
@@ -104,8 +102,7 @@ public class ClientsControllerTests {
                         delete("/api/clientes/")
                                 .param("clientId", "1"))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string("Cliente eliminado."));
+                .andExpect(status().isOk());
     }
 
     private Client getRealClient() {
