@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.junit.jupiter.api.Test;
 
 import acc.spring.DTO.MovementDto;
-import acc.spring.exceptions.InvalidParameter;
+import acc.spring.exceptions.list.InvalidParameter;
 
 public class MovementOperationsTests {
     MovementDto movementDto = new MovementDto();

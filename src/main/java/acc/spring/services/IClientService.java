@@ -3,7 +3,7 @@ package acc.spring.services;
 import java.util.List;
 
 import acc.spring.DTO.ClientDto;
-import acc.spring.exceptions.NotFoundException;
+import acc.spring.exceptions.list.NotFoundException;
 import acc.spring.model.Client;
 
 public interface IClientService {

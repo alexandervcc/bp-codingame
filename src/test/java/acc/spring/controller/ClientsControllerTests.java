@@ -108,7 +108,6 @@ public class ClientsControllerTests {
                 .andExpect(content().string("Cliente eliminado."));
     }
 
-
     private Client getRealClient() {
         Client client = new Client();
         client.setId(1L);

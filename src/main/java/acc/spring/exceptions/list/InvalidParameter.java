@@ -1,4 +1,4 @@
-package acc.spring.exceptions;
+package acc.spring.exceptions.list;
 
 public class InvalidParameter extends Exception{
 

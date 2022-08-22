@@ -14,6 +14,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import acc.spring.exceptions.list.BlockedAccountException;
+import acc.spring.exceptions.list.DateExceptionException;
+import acc.spring.exceptions.list.InsufficientFundsException;
+import acc.spring.exceptions.list.InvalidParameter;
+import acc.spring.exceptions.list.NotFoundException;
+
 @ControllerAdvice
 public class ExceptionsHandler extends ResponseEntityExceptionHandler {
 
@@ -37,7 +43,7 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
-    @ExceptionHandler(value = { DateException.class })
+    @ExceptionHandler(value = { DateExceptionException.class })
     public ResponseEntity<?> handleDatesException(Exception ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }

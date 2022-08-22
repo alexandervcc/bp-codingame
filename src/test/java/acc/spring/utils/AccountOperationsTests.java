@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import acc.spring.DTO.AccountDto;
-import acc.spring.exceptions.BlockedAccountException;
-import acc.spring.exceptions.InvalidParameter;
+import acc.spring.exceptions.list.BlockedAccountException;
+import acc.spring.exceptions.list.InvalidParameter;
 import acc.spring.model.Account;
 
 public class AccountOperationsTests {

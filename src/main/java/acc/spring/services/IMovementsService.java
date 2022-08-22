@@ -7,7 +7,7 @@ import org.springframework.core.io.FileSystemResource;
 
 import acc.spring.DTO.MovementDto;
 import acc.spring.DTO.ResListMovement;
-import acc.spring.exceptions.NotFoundException;
+import acc.spring.exceptions.list.NotFoundException;
 import acc.spring.model.Movement;
 
 public interface IMovementsService {

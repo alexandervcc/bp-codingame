@@ -7,8 +7,8 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import acc.spring.DTO.ClientDto;
-import acc.spring.exceptions.InvalidParameter;
-import acc.spring.exceptions.NotFoundException;
+import acc.spring.exceptions.list.InvalidParameter;
+import acc.spring.exceptions.list.NotFoundException;
 import acc.spring.model.Client;
 import acc.spring.model.Person;
 import acc.spring.repository.ClientRepository;

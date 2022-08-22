@@ -1,8 +1,8 @@
 package acc.spring.utils;
 
 import acc.spring.DTO.AccountDto;
-import acc.spring.exceptions.BlockedAccountException;
-import acc.spring.exceptions.InvalidParameter;
+import acc.spring.exceptions.list.BlockedAccountException;
+import acc.spring.exceptions.list.InvalidParameter;
 import acc.spring.model.Account;
 
 import static acc.spring.constants.AppConstants.*;

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import acc.spring.DTO.AccountDto;
-import acc.spring.exceptions.NotFoundException;
+import acc.spring.exceptions.list.NotFoundException;
 import acc.spring.model.Account;
 import acc.spring.services.IAccountService;
 import lombok.AllArgsConstructor;

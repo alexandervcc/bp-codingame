@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import acc.spring.DTO.AccountDto;
-import acc.spring.exceptions.NotFoundException;
+import acc.spring.exceptions.list.NotFoundException;
 import acc.spring.model.Account;
 import acc.spring.model.Client;
 import acc.spring.repository.AccountRepository;

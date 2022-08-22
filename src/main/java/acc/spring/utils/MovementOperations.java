@@ -1,8 +1,8 @@
 package acc.spring.utils;
 
 import acc.spring.DTO.MovementDto;
-import acc.spring.exceptions.InsufficientFundsException;
-import acc.spring.exceptions.InvalidParameter;
+import acc.spring.exceptions.list.InsufficientFundsException;
+import acc.spring.exceptions.list.InvalidParameter;
 
 import static acc.spring.constants.AppConstants.*;
 

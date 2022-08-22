@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import acc.spring.DTO.MovementDto;
 import acc.spring.DTO.ResListMovement;
 import acc.spring.DTO.ResMovementDto;
-import acc.spring.exceptions.DateException;
-import acc.spring.exceptions.NotFoundException;
+import acc.spring.exceptions.list.DateExceptionException;
+import acc.spring.exceptions.list.NotFoundException;
 import acc.spring.model.Account;
 import acc.spring.model.Client;
 import acc.spring.model.Movement;
@@ -85,7 +85,7 @@ public class MovementServiceImpl implements IMovementsService {
 		Boolean useDatesForFiltering;
 		if (movementDto.fechaInicio != null && movementDto.fechaFin != null) {
 			if (movementDto.fechaInicio.after(movementDto.fechaFin)) {
-				throw new DateException("Fecha inicial despues de la final");
+				throw new DateExceptionException("Fecha inicial despues de la final");
 			}
 			useDatesForFiltering = true;
 		} else if (movementDto.fechaInicio != null && movementDto.fechaFin == null) {

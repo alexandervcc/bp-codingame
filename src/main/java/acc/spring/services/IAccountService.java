@@ -3,7 +3,7 @@ package acc.spring.services;
 import java.util.List;
 
 import acc.spring.DTO.AccountDto;
-import acc.spring.exceptions.NotFoundException;
+import acc.spring.exceptions.list.NotFoundException;
 import acc.spring.model.Account;
 
 public interface IAccountService {
