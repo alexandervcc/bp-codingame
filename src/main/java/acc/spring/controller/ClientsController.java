@@ -33,16 +33,13 @@ public class ClientsController {
 	}
 
 	@GetMapping(path = "/")
-	public ResponseEntity<?> searchClientById(@RequestParam Long clientId) throws NotFoundException {
+	public ResponseEntity<?> getClientById(@RequestParam Long clientId) throws NotFoundException {
 		Client client = clienteService.getClientById(clientId);
-		if (client == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		}
-		return ResponseEntity.status(HttpStatus.FOUND).body(client);
+		return ResponseEntity.status(HttpStatus.OK).body(client);
 	}
 
 	@PostMapping(path = "/")
-	public ResponseEntity<Client> createNewClient(@RequestBody ClientDto clientDto) throws Exception{
+	public ResponseEntity<Client> createNewClient(@RequestBody ClientDto clientDto) throws Exception {
 		Client newClient = clienteService.createNewClient(clientDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(newClient);
 	}
@@ -57,6 +54,6 @@ public class ClientsController {
 	@DeleteMapping("/")
 	public ResponseEntity<String> deleteClient(@RequestParam Long clientId) throws NotFoundException {
 		clienteService.deleteClientById(clientId);
-		return ResponseEntity.status(HttpStatus.OK).body("Cliente eliminado");
+		return ResponseEntity.status(HttpStatus.OK).body("Cliente eliminado.");
 	}
 }

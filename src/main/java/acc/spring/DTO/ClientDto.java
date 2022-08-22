@@ -1,6 +1,8 @@
 package acc.spring.DTO;
 
-public class ClientDto {
+import java.io.Serializable;
+
+public class ClientDto implements Serializable{
 	public String contrasena; 
 	public Boolean estado;
 	public String nombre;
