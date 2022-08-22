@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import acc.spring.DTO.ResponseDto;
 import acc.spring.exceptions.list.BlockedAccountException;
 import acc.spring.exceptions.list.DateExceptionException;
 import acc.spring.exceptions.list.InsufficientFundsException;
@@ -24,39 +25,57 @@ import acc.spring.exceptions.list.NotFoundException;
 public class ExceptionsHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = { NotFoundException.class })
-    public ResponseEntity<?> handleNotFoundException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    public ResponseEntity<ResponseDto> handleNotFoundException(Exception ex) {
+        ResponseDto response = new ResponseDto();
+        response.title="Error";
+        response.error = ex.getMessage();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     @ExceptionHandler(value = { UnexpectedTypeException.class })
-    public ResponseEntity<?> handleTypeException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Valor invalido en su solicitud: " + ex.getMessage());
+    public ResponseEntity<ResponseDto> handleTypeException(Exception ex) {
+        ResponseDto response = new ResponseDto();
+        response.title="Error";
+        response.error = "Valor invalido en su solicitud: " + ex.getMessage();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(value = { InvalidParameter.class })
-    public ResponseEntity<?> handleDtoParametersException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    public ResponseEntity<ResponseDto> handleDtoParametersException(Exception ex) {
+        ResponseDto response = new ResponseDto();
+        response.title="Error";
+        response.error = ex.getMessage();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(value = { InsufficientFundsException.class })
-    public ResponseEntity<?> handleInsuficientFundsException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    public ResponseEntity<ResponseDto> handleInsuficientFundsException(Exception ex) {
+        ResponseDto response = new ResponseDto();
+        response.title="Error";
+        response.error = ex.getMessage();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(value = { DateExceptionException.class })
-    public ResponseEntity<?> handleDatesException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    public ResponseEntity<ResponseDto> handleDatesException(Exception ex) {
+        ResponseDto response = new ResponseDto();
+        response.title="Error";
+        response.error = ex.getMessage();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(value = { BlockedAccountException.class })
-    public ResponseEntity<?> handleInnactiveAccount(Exception ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    public ResponseEntity<ResponseDto> handleInnactiveAccount(Exception ex) {
+        ResponseDto response = new ResponseDto();
+        response.title="Error";
+        response.error = ex.getMessage();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     
 
     @ExceptionHandler(value = { ConstraintViolationException.class })
-    public ResponseEntity<?> handleModelConstrainsException(ConstraintViolationException ex) {
+    public ResponseEntity<ResponseDto> handleModelConstrainsException(ConstraintViolationException ex) {
         Set<ConstraintViolation<?>> listOfValidations = ex.getConstraintViolations();
 
         Map<String, String> errorMessages = new HashMap<String, String>();
@@ -64,7 +83,11 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         listOfValidations.stream().forEach((validation) -> {
             errorMessages.put(validation.getPropertyPath().toString(), validation.getMessage());
         });
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessages);
+        
+        ResponseDto response = new ResponseDto();
+        response.title="Error";
+        response.errorsList = errorMessages;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
 }

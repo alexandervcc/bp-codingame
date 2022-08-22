@@ -36,7 +36,7 @@ public class ClientsControllerTests {
 
     @Test
     public void getAllClients() throws Exception {
-        List<Client> listaClientes = new ArrayList();
+        List<Client> listaClientes = new ArrayList<Client>();
         when(clientService.getAllClients()).thenReturn(listaClientes);
         this.mockMvc
                 .perform(get("/api/clientes/all"))
