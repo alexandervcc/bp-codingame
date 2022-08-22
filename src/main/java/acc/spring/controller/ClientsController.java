@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import acc.spring.DTO.ClientDto;
+import acc.spring.DTO.ResponseDto;
 import acc.spring.exceptions.list.NotFoundException;
 import acc.spring.model.Client;
 import acc.spring.services.IClientService;
@@ -27,33 +28,48 @@ public class ClientsController {
 	private IClientService clienteService;
 
 	@GetMapping(path = "/all")
-	public ResponseEntity<List<?>> getAllClients() {
+	public ResponseEntity<ResponseDto> getAllClients() {
 		List<Client> listaClientes = clienteService.getAllClients();
-		return ResponseEntity.status(HttpStatus.OK).body(listaClientes);
+		ResponseDto response = new ResponseDto();
+		response.dataList = listaClientes;
+		response.title = "Lista de clientes";
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@GetMapping(path = "/")
-	public ResponseEntity<?> getClientById(@RequestParam Long clientId) throws NotFoundException {
+	public ResponseEntity<ResponseDto> getClientByParam(@RequestParam(required = false) Long clientId)
+			throws NotFoundException {
 		Client client = clienteService.getClientById(clientId);
-		return ResponseEntity.status(HttpStatus.OK).body(client);
+		ResponseDto response = new ResponseDto();
+		response.data = client;
+		response.title = "Cliente encontrado";
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@PostMapping(path = "/")
-	public ResponseEntity<Client> createNewClient(@RequestBody ClientDto clientDto) throws Exception {
+	public ResponseEntity<ResponseDto> createNewClient(@RequestBody ClientDto clientDto) throws Exception {
 		Client newClient = clienteService.createNewClient(clientDto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(newClient);
+		ResponseDto response = new ResponseDto();
+		response.data = newClient;
+		response.title = "Cliente Creado";
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@PutMapping("/")
-	public ResponseEntity<Client> updateClient(@RequestParam Long clientId, @RequestBody ClientDto clientDto)
+	public ResponseEntity<ResponseDto> updateClient(@RequestParam Long clientId, @RequestBody ClientDto clientDto)
 			throws NotFoundException {
 		Client client = clienteService.updateClient(clientId, clientDto);
-		return ResponseEntity.status(HttpStatus.OK).body(client);
+		ResponseDto response = new ResponseDto();
+		response.data = client;
+		response.title = "Cliente actualizado";
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@DeleteMapping("/")
-	public ResponseEntity<String> deleteClient(@RequestParam Long clientId) throws NotFoundException {
+	public ResponseEntity<ResponseDto> deleteClient(@RequestParam Long clientId) throws NotFoundException {
 		clienteService.deleteClientById(clientId);
-		return ResponseEntity.status(HttpStatus.OK).body("Cliente eliminado.");
+		ResponseDto response = new ResponseDto();
+		response.title = "Cliente eliminado.";
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 }
