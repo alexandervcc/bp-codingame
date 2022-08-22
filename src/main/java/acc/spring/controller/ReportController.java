@@ -6,6 +6,7 @@ import java.util.Date;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,7 @@ public class ReportController {
     IMovementsService movementsService;
 
     @GetMapping(path = "/")
-    public ResponseEntity<?> getMovementsByAccount(
+    public ResponseEntity<?> downloadMovementsReport(
             @RequestParam Long clientId,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date fechaInicio,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date fechaFin)
@@ -36,7 +37,7 @@ public class ReportController {
 
         FileSystemResource pdfReport = movementsService.createMovementPDFReport(clientId, movementDto);
 
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_PDF)
                 .body(pdfReport);
     }
 }

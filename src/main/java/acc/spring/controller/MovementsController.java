@@ -2,6 +2,7 @@ package acc.spring.controller;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -17,23 +18,30 @@ import org.springframework.web.bind.annotation.RestController;
 
 import acc.spring.DTO.MovementDto;
 import acc.spring.DTO.ResListMovement;
+import acc.spring.DTO.ResponseDto;
 import acc.spring.model.Movement;
 import acc.spring.services.IMovementsService;
 import lombok.AllArgsConstructor;
 
+import static acc.spring.constants.AppConstants.CONTENT_TYPE_APP_JSON;
+
 @RestController
-@RequestMapping(path = "api/movimientos")
+@RequestMapping(path = "api/movimientos", produces = CONTENT_TYPE_APP_JSON)
 @AllArgsConstructor
 public class MovementsController {
 	private IMovementsService movementsService;
+
 	@GetMapping(path = "/all")
-	public ResponseEntity<Iterable<Movement>> getAllMovements() {
-		Iterable<Movement> listaMovimientos = movementsService.getAllMovements();
-		return ResponseEntity.status(HttpStatus.OK).body(listaMovimientos);
+	public ResponseEntity<ResponseDto> getAllMovements() {
+		List<Movement> listaMovimientos = movementsService.getAllMovements();
+		ResponseDto response = new ResponseDto();
+		response.dataList = listaMovimientos;
+		response.title = "Todas cuentas";
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@GetMapping(path = "/")
-	public ResponseEntity<?> getMovementsByAccount(
+	public ResponseEntity<ResponseDto> getMovementsByAccount(
 			@RequestParam Long clientId,
 			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date fechaInicio,
 			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date fechaFin)
@@ -45,26 +53,36 @@ public class MovementsController {
 			movementDto.fechaFin = new Timestamp(fechaFin.getTime());
 
 		ResListMovement listMovements = movementsService.getMovementsByClient(clientId, movementDto);
-
-		return ResponseEntity.status(HttpStatus.OK).body(listMovements);
+		ResponseDto response = new ResponseDto();
+		response.data = listMovements;
+		response.title = "Movimientos Encontrados.";
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@PostMapping(path = "/")
-	public ResponseEntity<Movement> createNewMovement(@RequestBody MovementDto movementDto) throws Exception {
+	public ResponseEntity<ResponseDto> createNewMovement(@RequestBody MovementDto movementDto) throws Exception {
 		Movement newMovement = movementsService.createNewMovement(movementDto);
-		return ResponseEntity.status(HttpStatus.OK).body(newMovement);
+		ResponseDto response = new ResponseDto();
+		response.title = "Movimiento Creado.";
+		response.data = newMovement;
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@PutMapping("/")
-	public ResponseEntity<Movement> updateMovement(@RequestBody MovementDto movementDto)
+	public ResponseEntity<ResponseDto> updateMovement(@RequestBody MovementDto movementDto)
 			throws Exception {
 		Movement movement = movementsService.updateMovement(movementDto);
-		return ResponseEntity.status(HttpStatus.OK).body(movement);
+		ResponseDto response = new ResponseDto();
+		response.title = "Movimiento Actualizado.";
+		response.data = movement;
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@DeleteMapping("/")
-	public ResponseEntity<String> deleteMovement(@RequestParam Long movementId) throws Exception {
+	public ResponseEntity<ResponseDto> deleteMovement(@RequestParam Long movementId) throws Exception {
 		movementsService.deleteMovement(movementId);
-		return ResponseEntity.status(HttpStatus.OK).body("Movimiento eliminado");
+		ResponseDto response = new ResponseDto();
+		response.title = "Movimiento eliminado.";
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 }

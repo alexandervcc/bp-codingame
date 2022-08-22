@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,8 +22,11 @@ import acc.spring.services.IClientService;
 
 import lombok.AllArgsConstructor;
 
+
+import static acc.spring.constants.AppConstants.CONTENT_TYPE_APP_JSON;
+
 @RestController
-@RequestMapping(path = "api/clientes")
+@RequestMapping(path = "api/clientes", produces = CONTENT_TYPE_APP_JSON)
 @AllArgsConstructor
 public class ClientsController {
 	private IClientService clienteService;
@@ -36,8 +40,18 @@ public class ClientsController {
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
-	@GetMapping(path = "/")
-	public ResponseEntity<ResponseDto> getClientByParam(@RequestParam(required = false) Long clientId)
+	@GetMapping(path = "")
+	public ResponseEntity<ResponseDto> getClientsByName(@RequestParam("nombre") String clientName)
+			throws Exception {
+		List<Client> listClients = clienteService.getClientsByName(clientName);
+		ResponseDto response = new ResponseDto();
+		response.dataList = listClients;
+		response.title = "Clientes encontrados";
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
+
+	@GetMapping(path = "/{id}")
+	public ResponseEntity<ResponseDto> getClientById(@PathVariable("id") Long clientId)
 			throws NotFoundException {
 		Client client = clienteService.getClientById(clientId);
 		ResponseDto response = new ResponseDto();

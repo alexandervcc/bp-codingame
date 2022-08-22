@@ -9,6 +9,8 @@ import acc.spring.model.Client;
 public interface IClientService {
     public Client createNewClient(ClientDto clienteDto) throws Exception;
 
+    public List<Client> getClientsByName(String clientName) throws Exception;
+
     public Client updateClient(Long id, ClientDto clienteDto) throws NotFoundException;
 
     public void deleteClientById(Long id) throws NotFoundException;

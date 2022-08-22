@@ -14,4 +14,6 @@ public final class AppConstants {
 
     public static final String REPORT_URL_NAME = "./reporte.pdf";
 
-    }
+    public static final String CONTENT_TYPE_APP_JSON = "application/json";
+
+}

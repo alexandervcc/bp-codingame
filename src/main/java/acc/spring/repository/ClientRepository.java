@@ -12,5 +12,5 @@ import acc.spring.model.Client;
 @Repository
 public interface ClientRepository extends JpaRepository<Client,Long>{
     @Query(value = "SELECT c FROM Client c WHERE c.nombre LIKE CONCAT('%',:nombreCliente,'%')")
-    public List<Client> findUsersWithPartOfName(@Param("nombreCliente") String nombreCliente);
+    public List<Client> findClientsWithPartOfName(@Param("nombreCliente") String nombreCliente);
 }

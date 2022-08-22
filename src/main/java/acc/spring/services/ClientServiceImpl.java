@@ -43,6 +43,16 @@ public class ClientServiceImpl implements IClientService {
     return clienteRepository.save(newCliente);
   }
 
+  
+
+  @Override
+  public List<Client> getClientsByName(String clientName) throws Exception {
+    List<Client> listClients = clienteRepository.findClientsWithPartOfName(clientName);
+    return listClients;
+  }
+
+
+
   @Override
   public void deleteClientById(Long id) throws NotFoundException {
     Client clientToDelete = clienteRepository.findById(id)
