@@ -11,14 +11,15 @@ import acc.spring.exceptions.list.InvalidParameter;
 import acc.spring.model.Account;
 
 public class AccountOperationsTests {
-    AccountDto accountDto = new AccountDto();
-    Account account = new Account();
+    private AccountDto accountDto = new AccountDto();
+    private Account account = new Account();
+    private AccountOperations accountOperations = new AccountOperations();
 
     @Test
     void checkInvalidAccountData() {
         accountDto.tipoDeCuenta = "AHORROSS";
         Exception ex = assertThrows(InvalidParameter.class, () -> {
-            AccountOperations.checkInvalidValuesForAccount(accountDto);
+            accountOperations.checkInvalidValuesForAccount(accountDto);
         });
         assertTrue(ex.getMessage().equals("Tipo de cuenta invalida"));
     }
@@ -29,18 +30,17 @@ public class AccountOperationsTests {
         accountDto.saldoInicial = -1L;
 
         Exception ex = assertThrows(InvalidParameter.class, () -> {
-            AccountOperations.checkInvalidValuesForAccount(accountDto);
+            accountOperations.checkInvalidValuesForAccount(accountDto);
         });
         assertTrue(ex.getMessage().equals("Valor invalido para saldo"));
     }
-
 
     @Test
     void checkBlockedAccountData() {
         account.setEstado(false);
 
         Exception ex = assertThrows(BlockedAccountException.class, () -> {
-            AccountOperations.checkAccountStatus(account);
+            accountOperations.checkAccountStatus(account);
         });
         assertTrue(ex.getMessage().equals("Cuenta esta inactiva"));
     }

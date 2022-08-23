@@ -7,8 +7,11 @@ import acc.spring.model.Account;
 
 import static acc.spring.constants.AppConstants.*;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class AccountOperations {
-    public static void checkInvalidValuesForAccount(AccountDto accountDto) throws Exception {
+    public void checkInvalidValuesForAccount(AccountDto accountDto) throws Exception {
         if (!ALLOWED_ACCOUNT_TYPES.contains(accountDto.tipoDeCuenta)) {
             throw new InvalidParameter("Tipo de cuenta invalida");
         }
@@ -17,9 +20,9 @@ public class AccountOperations {
         }
     }
 
-    public static void checkAccountStatus(Account account) throws BlockedAccountException{
+    public void checkAccountStatus(Account account) throws BlockedAccountException {
         if (!account.getEstado()) {
-			throw new BlockedAccountException("Cuenta esta inactiva");
-		}
+            throw new BlockedAccountException("Cuenta esta inactiva");
+        }
     }
 }

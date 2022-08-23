@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 public class AccountServiceImpl implements IAccountService {
   private AccountRepository accountRepository;
   private ClientRepository clientRepository;
+  private AccountOperations accountOperations;
 
   @Override
   public List<Account> getAllAcounts() {
@@ -30,7 +31,7 @@ public class AccountServiceImpl implements IAccountService {
   @Override
   public Account createNewAccount(AccountDto accountDto) throws Exception {
 
-    AccountOperations.checkInvalidValuesForAccount(accountDto);
+    accountOperations.checkInvalidValuesForAccount(accountDto);
 
     Client client = clientRepository.findById(accountDto.clienteId)
         .orElseThrow(() -> new NotFoundException("Cliente no encontrado"));
@@ -52,7 +53,7 @@ public class AccountServiceImpl implements IAccountService {
 
   @Override
   public Account updateAccount(AccountDto accountDto, Long accountId) throws Exception {
-    AccountOperations.checkInvalidValuesForAccount(accountDto);
+    accountOperations.checkInvalidValuesForAccount(accountDto);
 
     Account account = accountRepository.findById(accountId)
         .orElseThrow(() -> new NotFoundException("Cuenta no Encontrada"));
@@ -71,7 +72,7 @@ public class AccountServiceImpl implements IAccountService {
   public void deleteAccountById(Long accountId) throws NotFoundException {
     Account account = accountRepository.findById(accountId)
         .orElseThrow(() -> new NotFoundException("Cuenta no Encontrada"));
-        
+
     accountRepository.delete(account);
   }
 

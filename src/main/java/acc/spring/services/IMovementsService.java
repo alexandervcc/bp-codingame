@@ -12,11 +12,11 @@ import acc.spring.model.Movement;
 public interface IMovementsService {
     public ResMovementDto createNewMovement(MovementDto movementDto) throws Exception;
 
-    public ResListMovement getMovementsByClient(Long clientId, MovementDto movementDto) throws Exception;
+    public ResListMovement getMovementsByClient(String clientName, MovementDto movementDto) throws Exception;
 
     public ResListMovement getAllMovements();
 
-    public FileSystemResource createMovementPDFReport(Long clientId, MovementDto movementDto) throws Exception ;
+    public FileSystemResource createMovementPDFReport(String clientName, MovementDto movementDto) throws Exception ;
 
     public Movement updateMovement(MovementDto movementDto) throws Exception;
 

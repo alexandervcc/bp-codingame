@@ -35,6 +35,8 @@ public class MovementServiceImpl implements IMovementsService {
 	private MovementRepository movementsRepository;
 	private AccountRepository accountRepository;
 	private ClientRepository clientRepository;
+	private MovementOperations movementOperations;
+	private AccountOperations accountOperations;
 	private PDFGenerator pdfGenerator;
 
 	@Override
@@ -62,14 +64,14 @@ public class MovementServiceImpl implements IMovementsService {
 	@Override
 	public ResMovementDto createNewMovement(MovementDto movementDto) throws Exception {
 		ResMovementDto resMovementDto = new ResMovementDto();
-		MovementOperations.checkInvalidValuesForMovement(movementDto);
+		movementOperations.checkInvalidValuesForMovement(movementDto);
 
 		Account account = accountRepository.findById(movementDto.cuentaOrigen)
 				.orElseThrow(() -> new NotFoundException("Cuenta Origen no Encontrada"));
 
-		AccountOperations.checkAccountStatus(account);
+		accountOperations.checkAccountStatus(account);
 		resMovementDto.saldoInicial = account.getSaldoInicial();
-		Long newOriginFunds = MovementOperations.calculateNewAccountFunds(movementDto, account.getSaldoInicial());
+		Long newOriginFunds = movementOperations.calculateNewAccountFunds(movementDto, account.getSaldoInicial());
 
 		account.setSaldoInicial(newOriginFunds);
 		Timestamp movementDate = new Timestamp(new Date().getTime());
@@ -98,12 +100,16 @@ public class MovementServiceImpl implements IMovementsService {
 	}
 
 	@Override
-	public ResListMovement getMovementsByClient(Long clientId, MovementDto movementDto)
+	public ResListMovement getMovementsByClient(String clientName, MovementDto movementDto)
 			throws Exception {
-		Client client = clientRepository.findById(clientId).orElseThrow(
-				() -> new NotFoundException("Cliente no encontrado"));
+		List<Client> listClients = clientRepository.findClientsWithPartOfName(clientName);
+		if (listClients.size() == 0) {
+			throw new NotFoundException("Cliente no encontrado");
+		}
 
-		List<Account> listAccount = accountRepository.findAllAccountsByClientId(clientId);
+		Client client = listClients.get(0);
+
+		List<Account> listAccount = accountRepository.findAllAccountsByClientId(client.getId());
 		if (listAccount.size() == 0) {
 			throw new NotFoundException("No hay cuentas para el usuario indicado.");
 		}
@@ -158,9 +164,9 @@ public class MovementServiceImpl implements IMovementsService {
 	}
 
 	@Override
-	public FileSystemResource createMovementPDFReport(Long clientId, MovementDto movementDto) throws Exception {
+	public FileSystemResource createMovementPDFReport(String clientName, MovementDto movementDto) throws Exception {
 
-		ResListMovement movementReport = getMovementsByClient(clientId, movementDto);
+		ResListMovement movementReport = getMovementsByClient(clientName, movementDto);
 
 		pdfGenerator.createReport(movementReport);
 
@@ -171,12 +177,18 @@ public class MovementServiceImpl implements IMovementsService {
 	public Movement updateMovement(MovementDto movementDto) throws Exception {
 		Movement movement = movementsRepository.findById(movementDto.movementId)
 				.orElseThrow(() -> new NotFoundException("Movimiento no Encontrado"));
+		Long accountId = movement.getCuenta().getNumeroDeCuenta();
+		Account account = accountRepository.findById(accountId)
+				.orElseThrow(() -> new NotFoundException("Cuenta no Encontrada"));
+		Long newFundsValue = account.getSaldoInicial() - movement.getValor();
+		account.setSaldoInicial(newFundsValue);
 
 		if (movementDto.tipoMovimiento != null)
 			movement.setTipoMovimiento(movementDto.tipoMovimiento);
 		if (movementDto.valor != null)
 			movement.setValor(movementDto.valor);
 
+		accountRepository.save(account);
 		return movementsRepository.save(movement);
 	}
 

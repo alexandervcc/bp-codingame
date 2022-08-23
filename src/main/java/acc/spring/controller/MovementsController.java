@@ -42,7 +42,7 @@ public class MovementsController {
 
 	@GetMapping(path = "/")
 	public ResponseEntity<ResponseDto> getMovementsByAccount(
-			@RequestParam Long clientId,
+			@RequestParam String clientName,
 			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date fechaInicio,
 			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") Date fechaFin)
 			throws Exception {
@@ -52,7 +52,7 @@ public class MovementsController {
 		if (fechaFin != null)
 			movementDto.fechaFin = new Timestamp(fechaFin.getTime());
 
-		ResListMovement listMovements = movementsService.getMovementsByClient(clientId, movementDto);
+		ResListMovement listMovements = movementsService.getMovementsByClient(clientName, movementDto);
 		ResponseDto response = new ResponseDto();
 		response.data = listMovements;
 		response.title = "Movimientos Encontrados.";
@@ -65,7 +65,7 @@ public class MovementsController {
 		ResponseDto response = new ResponseDto();
 		response.title = "Movimiento Creado.";
 		response.data = newMovement;
-		return ResponseEntity.status(HttpStatus.OK).body(response);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@PutMapping("/")

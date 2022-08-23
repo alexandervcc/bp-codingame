@@ -6,8 +6,11 @@ import acc.spring.exceptions.list.InvalidParameter;
 
 import static acc.spring.constants.AppConstants.*;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MovementOperations {
-    public static void checkInvalidValuesForMovement(MovementDto movementDto) throws Exception {
+    public void checkInvalidValuesForMovement(MovementDto movementDto) throws Exception {
         if (movementDto.cuentaOrigen == null) {
             throw new InvalidParameter("Ingrese una cuenta de operacion");
         }
@@ -19,7 +22,7 @@ public class MovementOperations {
         }
     }
 
-    public static Long calculateNewAccountFunds(MovementDto movementDto, Long accountFunds) throws Exception {
+    public Long calculateNewAccountFunds(MovementDto movementDto, Long accountFunds) throws Exception {
         Long newOriginFunds;
         if (movementDto.tipoMovimiento.equals("DEBITO")) {
             if (accountFunds < movementDto.valor) {

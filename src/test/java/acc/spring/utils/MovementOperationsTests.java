@@ -13,13 +13,13 @@ import acc.spring.exceptions.list.InvalidParameter;
 public class MovementOperationsTests {
     MovementDto movementDto = new MovementDto();
     Long accountFunds;
-
+    MovementOperations movementOperations = new MovementOperations();
 
     @Test
     void checkInvalidValueAccountForMovement(){
         movementDto.cuentaOrigen = null;
         Exception ex = assertThrows(InvalidParameter.class, () -> {
-            MovementOperations.checkInvalidValuesForMovement(movementDto);
+            movementOperations.checkInvalidValuesForMovement(movementDto);
         });
         assertTrue(ex.getMessage().equals("Ingrese una cuenta de operacion"));
     }
@@ -29,7 +29,7 @@ public class MovementOperationsTests {
         movementDto.cuentaOrigen = 1L;
         movementDto.tipoMovimiento = "";
         Exception ex = assertThrows(InvalidParameter.class, () -> {
-            MovementOperations.checkInvalidValuesForMovement(movementDto);
+            movementOperations.checkInvalidValuesForMovement(movementDto);
         });
         assertTrue(ex.getMessage().equals("Tipo de movimiento invalido"));
     }
@@ -41,7 +41,7 @@ public class MovementOperationsTests {
         movementDto.tipoMovimiento = "DEBITO";
         movementDto.valor = ThreadLocalRandom.current().nextLong(-9999,0);;
         Exception ex = assertThrows(InvalidParameter.class, () -> {
-            MovementOperations.checkInvalidValuesForMovement(movementDto);
+            movementOperations.checkInvalidValuesForMovement(movementDto);
         });
         assertTrue(ex.getMessage().equals("Valor de movimiento invalido"));
     }
