@@ -2,7 +2,6 @@ package acc.spring.controller;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import acc.spring.DTO.MovementDto;
 import acc.spring.DTO.ResListMovement;
+import acc.spring.DTO.ResMovementDto;
 import acc.spring.DTO.ResponseDto;
 import acc.spring.model.Movement;
 import acc.spring.services.IMovementsService;
@@ -33,10 +33,10 @@ public class MovementsController {
 
 	@GetMapping(path = "/all")
 	public ResponseEntity<ResponseDto> getAllMovements() {
-		List<Movement> listaMovimientos = movementsService.getAllMovements();
+		ResListMovement listaMovimientos = movementsService.getAllMovements();
 		ResponseDto response = new ResponseDto();
-		response.dataList = listaMovimientos;
-		response.title = "Todas cuentas";
+		response.data = listaMovimientos;
+		response.title = "Todos los movimientos";
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
@@ -61,7 +61,7 @@ public class MovementsController {
 
 	@PostMapping(path = "/")
 	public ResponseEntity<ResponseDto> createNewMovement(@RequestBody MovementDto movementDto) throws Exception {
-		Movement newMovement = movementsService.createNewMovement(movementDto);
+		ResMovementDto newMovement = movementsService.createNewMovement(movementDto);
 		ResponseDto response = new ResponseDto();
 		response.title = "Movimiento Creado.";
 		response.data = newMovement;

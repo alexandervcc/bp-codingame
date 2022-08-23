@@ -43,15 +43,11 @@ public class ClientServiceImpl implements IClientService {
     return clienteRepository.save(newCliente);
   }
 
-  
-
   @Override
   public List<Client> getClientsByName(String clientName) throws Exception {
     List<Client> listClients = clienteRepository.findClientsWithPartOfName(clientName);
     return listClients;
   }
-
-
 
   @Override
   public void deleteClientById(Long id) throws NotFoundException {
@@ -79,6 +75,18 @@ public class ClientServiceImpl implements IClientService {
       cliente.setContrasena(clienteDto.contrasena);
     if (clienteDto.estado != null)
       cliente.setEstado(clienteDto.estado);
+    if (clienteDto.nombre != null)
+      cliente.setNombre(clienteDto.nombre);
+    if (clienteDto.direccion != null)
+      cliente.setDireccion(clienteDto.direccion);
+    if (clienteDto.edad != null)
+      cliente.setEdad(clienteDto.edad);
+    if (clienteDto.genero != null)
+      cliente.setGenero(clienteDto.genero);
+    if (clienteDto.identificacion != null)
+      cliente.setIdentificacion(clienteDto.identificacion);
+    if (clienteDto.telefono != null)
+      cliente.setTelefono(clienteDto.telefono);
     return clienteRepository.save(cliente);
   }
 

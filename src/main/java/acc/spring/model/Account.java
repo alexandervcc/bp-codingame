@@ -54,6 +54,5 @@ public class Account {
     private Client cliente;
 
 	@OneToMany(mappedBy = "cuenta", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonIgnore
 	private Set<Movement> movimientos;
 }
