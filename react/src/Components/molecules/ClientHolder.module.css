@@ -1,0 +1,50 @@
+.Card {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid rgba(145, 145, 145, 0.5);
+  border-radius: 2rem;
+  padding: 1rem;
+  margin: 1rem;
+}
+.DataHolder {
+  margin-left: 1rem;
+  flex: 1;
+}
+
+.BotonEditar {
+  background-color: rgb(251, 246, 0);
+  width: 7rem;
+  height: 2rem;
+  color: rgba(8, 7, 60, 0.848);
+  font-weight: bold;
+  border: 0px;
+  margin: 2px;
+  font-size: 15px;
+  border-radius: 1rem;
+}
+
+.BotonEliminar {
+  background-color: rgba(20, 19, 76, 0.701);
+  width: 7rem;
+  height: 2rem;
+  color: white;
+  font-weight: bold;
+  border: 0px;
+  margin: 2px;
+  border-radius: 1rem;
+}
+
+.BotonAnadir {
+  background-color: rgb(187, 144, 52);
+  width: 7rem;
+  height: 2rem;
+  color: white;
+  font-weight: bold;
+  border: 0px;
+  margin: 2px;
+  border-radius: 1rem;
+}
+
+.ClientData {
+  margin: 2px;
+}

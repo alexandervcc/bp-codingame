@@ -1,0 +1,9 @@
+.table {
+  border: 1px solid;
+  width: 100%;
+  text-align: center;
+}
+
+.tableHeader {
+  background-color: rgb(194, 186, 75);
+}

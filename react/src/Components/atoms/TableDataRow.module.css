@@ -1,0 +1,19 @@
+.circleButton {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 0px;
+  padding: 0px;
+  margin: 2px;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.editButton {
+  background-color: rgb(123, 153, 78);
+}
+
+.deleteButton {
+  background-color: rgb(177, 88, 88);
+}
